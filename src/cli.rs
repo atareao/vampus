@@ -18,14 +18,12 @@ pub struct Cli {
 #[derive(Subcommand)]
 pub enum Commands {
     /// Increments the project version (updates the version number in the configuration).
-    // Usamos la nueva estructura compartida
     Upgrade(VersionArgs),
 
     /// Shows the resulting project version without applying the change.
     Preview(VersionArgs),
 
     /// Sets the project version back to a calculated previous version and updates the files.
-    // Usamos la nueva estructura compartida
     Downgrade(VersionArgs),
 
     /// Displays the current version of the project.
@@ -37,9 +35,7 @@ pub enum Commands {
 
 #[derive(Args)]
 /// Arguments specific to version manipulation commands (upgrade, downgrade, preview).
-// Creamos una única estructura para ambos comandos
 pub struct VersionArgs {
-    // --- Opciones de Versión Mutuamente Excluyentes ---
     /// Increments/Decrements the PATCH version (bug fixes).
     #[arg(long, action = ArgAction::SetTrue, group = "VERSION_TYPE")]
     pub patch: bool,
