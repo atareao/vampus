@@ -7,8 +7,8 @@ Este proyecto sigue **Git Flow** con versionado semántico automático.
 | Rama | Propósito | Base |
 |---|---|---|
 | `main` | Producción. Cada merge aquí dispara una release automática. | — |
-| `develop` | Integración de features en curso. | `main` |
-| `feature/*` | Nuevas funcionalidades. | `develop` |
+| `development` | Integración de features en curso. | `main` |
+| `feature/*` | Nuevas funcionalidades. | `development` |
 | `hotfix/*` | Correcciones urgentes a producción. | `main` |
 
 ## Flujo diario
@@ -16,9 +16,9 @@ Este proyecto sigue **Git Flow** con versionado semántico automático.
 ### Features
 
 ```bash
-# 1. Parte de develop
-git checkout develop
-git pull origin develop
+# 1. Parte de development
+git checkout development
+git pull origin development
 
 # 2. Crea rama feature
 git checkout -b feature/mi-feature
@@ -29,7 +29,7 @@ git commit -m "fix: header overflow on mobile"
 git commit -m "refactor: extract theme parser"
 #  ¡NO version bump! Eso lo hace CI automáticamente.
 
-# 4. PR: feature/mi-feature → develop
+# 4. PR: feature/mi-feature → development
 git push origin feature/mi-feature
 # Crear Pull Request en GitHub
 ```
@@ -51,17 +51,17 @@ git commit -m "fix: crash on empty file"
 git push origin hotfix/arreglo-critico
 # Crear Pull Request en GitHub
 
-# 5. Después del merge, sincronizar develop
-git checkout develop
+# 5. Después del merge, sincronizar development
+git checkout development
 git merge main
-git push origin develop
+git push origin development
 ```
 
 ### Releases
 
 ```bash
-# 1. Cuando develop está listo para producción
-#    Crear PR: develop → main
+# 1. Cuando development está listo para producción
+#    Crear PR: development → main
 
 # 2. Al mergear el PR en main, CI automáticamente:
 #    a) Detecta si el bump es patch/minor/major según conventional commits
@@ -71,6 +71,7 @@ git push origin develop
 #    e) Hace push del tag → dispara release.yml
 #    f) GitHub Actions compila 5 targets
 #    g) Crea GitHub Release con los binarios
+#    h) Publica en crates.io
 ```
 
 ## Conventional Commits
@@ -101,7 +102,7 @@ Configurado vía GitHub API:
 | Rama | Push directo | Status checks | Notas |
 |---|---|---|---|
 | `main` | Solo admins y GitHub Actions | ✅ `test` (strict) | Merge solo por PR, CI obligatorio |
-| `develop` | Permitido | ✅ `test` | — |
+| `development` | Permitido | ✅ `test` | — |
 
 ### vampus
 
@@ -132,23 +133,27 @@ Config: `cliff.toml`
 
 ### `release-prepare.yml` (push a main)
 
-Detecta bump type, ejecuta vampus, genera changelog, crea tag.
+Detecta bump type, ejecuta vampus, genera changelog, crea tag, sincroniza `development` con `main`.
 
 ### `release.yml` (push tag v*)
 
-Compila para 5 targets, crea GitHub Release.
+Compila para 5 targets, publica en crates.io, crea GitHub Release.
+
+### `ci.yml` (PR a main/development, push a development)
+
+Verifica formato, lint, build y tests.
 
 ## Resumen visual
 
 ```
-main   ──hotfix──●────────────●────────────────●
-                 \            /                /
-develop ──────────●──●──●────●──●──●──●────────●
-                  \ /        \   /
-feature  ──────────●  feature ──●
-                  feature/foo   feature/bar
+main        ──hotfix──●────────────●────────────────●
+                       \            /                /
+development ──────────●──●──●────●──●──●──●────────●
+                        \ /        \   /
+feature     ──────────●  feature ──●
+                      feature/foo   feature/bar
 
-● = merge a develop (PR normal)
+● = merge a development (PR normal)
 ● = merge a main (release auto)
 ```
 
@@ -160,12 +165,19 @@ No. El CI lo hace automáticamente al mergear a main. Solo preocúpate de escrib
 **¿Qué pasa si necesito un release sin cambios de código?**  
 Por ejemplo, para re-ejecutar CI. No debería ocurrir, pero si es necesario, puedes crear un commit vacío en main con cualquier mensaje que no empiece por "chore: release".
 
-**¿Cómo sincronizo develop con main después de un hotfix?**  
+**¿Cómo sincronizo development con main después de un hotfix?**  
 ```bash
-git checkout develop
+git checkout development
 git merge main
-git push origin develop
+git push origin development
 ```
 
 **¿Dónde se configura la versión actual?**  
 En `.vampus.yml` → `current_version`. vampus lo actualiza automáticamente al hacer bump.
+
+**Secretos de GitHub necesarios**  
+
+| Secreto | Propósito |
+|---|---|
+| `GH_PAT` | Personal Access Token con scope `contents: write` y `workflows: write` |
+| `CARGO_REGISTRY_TOKEN` | Token de API de crates.io para `cargo publish` |
