@@ -17,6 +17,9 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Commands {
+    /// Generate shell completion scripts.
+    Completions(ShellArgs),
+
     /// Increments the project version (updates the version number in the configuration).
     Upgrade(VersionArgs),
 
@@ -47,4 +50,11 @@ pub struct VersionArgs {
     /// Increments/Decrements the MAJOR version (breaking changes).
     #[arg(long, action = ArgAction::SetTrue, group = "VERSION_TYPE")]
     pub major: bool,
+}
+
+#[derive(Args)]
+pub struct ShellArgs {
+    /// The shell to generate completions for.
+    #[arg(value_enum)]
+    pub shell: clap_complete::Shell,
 }

@@ -1,6 +1,6 @@
 use std::{env, str::FromStr};
 
-use clap::Parser;
+use clap::{CommandFactory, Parser};
 use tracing::{debug, error};
 use tracing_subscriber::{EnvFilter, layer::SubscriberExt, util::SubscriberInitExt};
 
@@ -92,6 +92,11 @@ async fn main() {
                 "✅ Created default configuration file: {}",
                 config_path.display()
             );
+        }
+        Commands::Completions(args) => {
+            let mut cmd = Cli::command();
+            let name = cmd.get_name().to_string();
+            clap_complete::generate(args.shell, &mut cmd, name, &mut std::io::stdout());
         }
     }
 }
