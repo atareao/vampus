@@ -57,7 +57,7 @@ jobs:
             tar czf "$PKG.tar.gz" "$ARCHIVE_NAME"
             echo "ARTIFACT=$PKG.tar.gz" >> $GITHUB_ENV
           else
-            zip "$PKG.zip" "$ARCHIVE_NAME"
+            7z a "$PKG.zip" "$ARCHIVE_NAME"
             echo "ARTIFACT=$PKG.zip" >> $GITHUB_ENV
           fi
 
