@@ -1,4 +1,10 @@
 # Changelog
+## [0.4.1] - 2026-05-30
+
+### Miscellaneous Tasks
+
+- Remove x86_64-apple-darwin from release matrix
+- Remove x86_64-apple-darwin from release matrix
 ## [0.4.0] - 2026-05-30
 
 ### Bug Fixes
@@ -12,6 +18,7 @@
 ### Miscellaneous Tasks
 
 - Merge development into main
+- Release v0.4.0
 ## [0.3.3] - 2026-05-26
 
 ### Bug Fixes
