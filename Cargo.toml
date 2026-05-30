@@ -1,6 +1,9 @@
 [package]
 name = "vampus"
 version = "0.3.3"
+description = "A CLI tool for automated semantic version management across configurable file patterns."
+license = "MIT"
+repository = "https://github.com/atareao/vampus"
 edition = "2024"
 
 [dependencies]

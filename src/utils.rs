@@ -59,12 +59,14 @@ pub async fn simulate_replacement(
     })?;
 
     let content_bytes = fs::read(path).await?;
-    let content = String::from_utf8(content_bytes).map_err(|e| {
-        io::Error::new(
-            io::ErrorKind::InvalidData,
-            format!("File '{}' does NOT contain valid UTF-8 text: {}", path, e),
-        )
-    })?;
+    let content = String::from_utf8(content_bytes)
+        .map_err(|e| {
+            io::Error::new(
+                io::ErrorKind::InvalidData,
+                format!("File '{}' does NOT contain valid UTF-8 text: {}", path, e),
+            )
+        })?
+        .replace('\r', "");
 
     if !re_from.is_match(&content) {
         return Err(io::Error::new(
