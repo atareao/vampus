@@ -64,7 +64,8 @@ pub async fn simulate_replacement(
             io::ErrorKind::InvalidData,
             format!("File '{}' does NOT contain valid UTF-8 text: {}", path, e),
         )
-    })?;
+    })?
+    .replace('\r', "");
 
     if !re_from.is_match(&content) {
         return Err(io::Error::new(
