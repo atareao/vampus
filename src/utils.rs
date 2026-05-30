@@ -31,10 +31,21 @@ pub fn wrap_search_pattern(search_pattern: &str) -> String {
         return search_pattern.to_string();
     }
 
-    let prefix = parts[0];
-    let suffix = parts[1];
+    let prefix = escape_regex_literal(parts[0]);
+    let suffix = escape_regex_literal(parts[1]);
 
     format!("({prefix}){{{{current_version}}}}({suffix})")
+}
+
+fn escape_regex_literal(s: &str) -> String {
+    s.chars()
+        .map(|c| match c {
+            '\\' | '.' | '+' | '*' | '?' | '(' | ')' | '[' | ']' | '{' | '}' | '|' => {
+                format!("\\{}", c)
+            }
+            _ => c.to_string(),
+        })
+        .collect()
 }
 
 /// Simulates a regex replacement on a file, then verifies the new pattern exists.
