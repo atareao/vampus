@@ -1,10 +1,26 @@
 # Changelog
+## [0.4.3] - 2026-06-02
+
+### Bug Fixes
+
+- Restore Cargo.lock before cargo publish
+- Escape regex special chars in search pattern capture groups
+- Escape regex special chars in search pattern capture groups
+- Only escape parenthesis/brace chars in capture groups
+- Only escape parenthesis/brace chars in capture groups
+- Only escape ( ) [ ] { } in wrap_search_pattern; add regex test cases (#20) (#21)
+
+### Miscellaneous Tasks
+
+- Release v0.4.2
+- Release v0.4.2
 ## [0.4.1] - 2026-05-30
 
 ### Miscellaneous Tasks
 
 - Remove x86_64-apple-darwin from release matrix
 - Remove x86_64-apple-darwin from release matrix
+- Release v0.4.1
 ## [0.4.0] - 2026-05-30
 
 ### Bug Fixes
