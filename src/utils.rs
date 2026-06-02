@@ -40,7 +40,7 @@ pub fn wrap_search_pattern(search_pattern: &str) -> String {
 fn escape_regex_literal(s: &str) -> String {
     s.chars()
         .map(|c| match c {
-            '\\' | '.' | '+' | '*' | '?' | '(' | ')' | '[' | ']' | '{' | '}' | '|' => {
+            '(' | ')' | '[' | ']' | '{' | '}' => {
                 format!("\\{}", c)
             }
             _ => c.to_string(),
@@ -405,6 +405,36 @@ mod tests {
         fn handles_empty_suffix() {
             let result = wrap_search_pattern("v{{current_version}}");
             assert_eq!(result, r#"(v){{current_version}}()"#);
+        }
+
+        #[test]
+        fn wraps_pattern_with_regex_shorthand() {
+            let result = wrap_search_pattern(r##"^version\s*=\s*"{{current_version}}"$"##);
+            assert_eq!(result, r##"(^version\s*=\s*"){{current_version}}("$)"##);
+        }
+
+        #[test]
+        fn wraps_pattern_with_literal_parens() {
+            let result = wrap_search_pattern(r#"^version ({{current_version}})$"#);
+            assert_eq!(result, r#"(^version \(){{current_version}}(\)$)"#);
+        }
+
+        #[test]
+        fn wraps_pattern_with_literal_brackets() {
+            let result = wrap_search_pattern(r#"^data[{{current_version}}]$"#);
+            assert_eq!(result, r#"(^data\[){{current_version}}(\]$)"#);
+        }
+
+        #[test]
+        fn wraps_pattern_with_literal_braces() {
+            let result = wrap_search_pattern(r#"^{{current_version}}}$"#);
+            assert_eq!(result, r#"(^){{current_version}}(\}$)"#);
+        }
+
+        #[test]
+        fn wraps_pattern_with_digit_shorthand() {
+            let result = wrap_search_pattern(r#"version-\d+\.{{current_version}}"#);
+            assert_eq!(result, r#"(version-\d+\.){{current_version}}()"#);
         }
     }
 
