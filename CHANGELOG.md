@@ -1,4 +1,9 @@
 # Changelog
+## [0.4.4] - 2026-06-02
+
+### Bug Fixes
+
+- Add --allow-dirty to cargo publish step (#23)
 ## [0.4.3] - 2026-06-02
 
 ### Bug Fixes
@@ -14,6 +19,7 @@
 
 - Release v0.4.2
 - Release v0.4.2
+- Release v0.4.3
 ## [0.4.1] - 2026-05-30
 
 ### Miscellaneous Tasks
