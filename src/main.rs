@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::{env, str::FromStr};
 
 use clap::{CommandFactory, Parser};
@@ -123,7 +124,7 @@ async fn execute_version_change(args: &VersionArgs, operation: Operation) {
 
     let replacement_to = format!("${{1}}{}${{2}}", new_version);
 
-    let mut modified_files = Vec::new();
+    let mut modified_files: HashMap<String, String> = HashMap::new();
     let mut all_files_verified = true;
 
     println!("-- Verifying and simulating changes... --");
@@ -152,11 +153,12 @@ async fn execute_version_change(args: &VersionArgs, operation: Operation) {
             &pattern_from,
             &replacement_to,
             &pattern_to,
+            modified_files.get(&replace.file).map(|s| s.as_str()),
         )
         .await
         {
             Ok(content) => {
-                modified_files.push((replace.file.clone(), content));
+                modified_files.insert(replace.file.clone(), content);
             }
             Err(e) => {
                 error!(File = %replace.file, "Simulation failure: {}", e);
@@ -169,8 +171,8 @@ async fn execute_version_change(args: &VersionArgs, operation: Operation) {
     if all_files_verified {
         println!("-- Applying changes... --");
 
-        for (file_path, content) in modified_files {
-            match apply_replacement(file_path.as_str(), &content).await {
+        for (file_path, content) in &modified_files {
+            match apply_replacement(file_path.as_str(), content).await {
                 Ok(_) => {
                     println!("✅ Updated: {}", file_path);
                 }

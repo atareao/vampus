@@ -48,12 +48,16 @@ fn escape_regex_literal(s: &str) -> String {
         .collect()
 }
 
-/// Simulates a regex replacement on a file, then verifies the new pattern exists.
+/// Simulates a regex replacement on file content.
+///
+/// If `existing_content` is `Some`, uses that as the base instead of reading from disk.
+/// This allows chaining multiple replacements on the same file.
 pub async fn simulate_replacement(
     path: &str,
     pattern_from: &str,
     replacement_to: &str,
     pattern_to: &str,
+    existing_content: Option<&str>,
 ) -> Result<String, io::Error> {
     let re_from = Regex::new(pattern_from).map_err(|e| {
         io::Error::new(
@@ -69,15 +73,20 @@ pub async fn simulate_replacement(
         )
     })?;
 
-    let content_bytes = fs::read(path).await?;
-    let content = String::from_utf8(content_bytes)
-        .map_err(|e| {
-            io::Error::new(
-                io::ErrorKind::InvalidData,
-                format!("File '{}' does NOT contain valid UTF-8 text: {}", path, e),
-            )
-        })?
-        .replace('\r', "");
+    let content = match existing_content {
+        Some(c) => c.to_string(),
+        None => {
+            let content_bytes = fs::read(path).await?;
+            String::from_utf8(content_bytes)
+                .map_err(|e| {
+                    io::Error::new(
+                        io::ErrorKind::InvalidData,
+                        format!("File '{}' does NOT contain valid UTF-8 text: {}", path, e),
+                    )
+                })?
+                .replace('\r', "")
+        }
+    };
 
     if !re_from.is_match(&content) {
         return Err(io::Error::new(
