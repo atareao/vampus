@@ -1,4 +1,9 @@
 # Changelog
+## [0.4.5] - 2026-06-02
+
+### Miscellaneous Tasks
+
+- Release v0.4.5
 ## [0.4.4] - 2026-06-02
 
 ### Miscellaneous Tasks
