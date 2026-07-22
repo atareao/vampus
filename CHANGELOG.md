@@ -1,4 +1,9 @@
 # Changelog
+## [0.4.4] - 2026-06-02
+
+### Miscellaneous Tasks
+
+- Release v0.4.4
 ## [0.4.3] - 2026-06-02
 
 ### Bug Fixes
@@ -9,11 +14,13 @@
 - Only escape parenthesis/brace chars in capture groups
 - Only escape parenthesis/brace chars in capture groups
 - Only escape ( ) [ ] { } in wrap_search_pattern; add regex test cases (#20) (#21)
+- Add --allow-dirty to cargo publish step (#23)
 
 ### Miscellaneous Tasks
 
 - Release v0.4.2
 - Release v0.4.2
+- Release v0.4.3
 ## [0.4.1] - 2026-05-30
 
 ### Miscellaneous Tasks
