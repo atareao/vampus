@@ -1,4 +1,14 @@
 # Changelog
+## [0.4.7] - 2026-11-15
+
+### Other
+
+- V0.4.7 (noyalib + deps upgrade) (#26)
+## [0.4.6] - 2026-07-22
+
+### Miscellaneous Tasks
+
+- Release v0.4.6
 ## [0.4.5] - 2026-06-02
 
 ### Miscellaneous Tasks
