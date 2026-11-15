@@ -11,7 +11,7 @@ clap = { version = "4.5.51", features = ["derive"] }
 clap_complete = "4.5"
 regex = "1.12.2"
 serde = { version = "1.0.228", features = ["derive"] }
-serde_yaml = "0.9.34"
+serde_yaml = { version = "0.0.60", package = "noyalib" }
 thiserror = "2"
 tokio = { version = "1.48.0", features = ["full"] }
 tracing = "0.1.41"
