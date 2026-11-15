@@ -7,12 +7,12 @@ repository = "https://github.com/atareao/vampus"
 edition = "2024"
 
 [dependencies]
-clap = { version = "4.5.51", features = ["derive"] }
-clap_complete = "4.5"
-regex = "1.12.2"
-serde = { version = "1.0.228", features = ["derive"] }
-serde_yaml = "0.9.34"
+clap = { version = "4.6.7", features = ["derive"] }
+clap_complete = "4.6"
+regex = "1.13.1"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_yaml = { version = "0.0.60", package = "noyalib" }
 thiserror = "2"
-tokio = { version = "1.48.0", features = ["full"] }
-tracing = "0.1.41"
-tracing-subscriber = { version = "0.3.20", features = ["env-filter"] }
+tokio = { version = "1.54.1", features = ["full"] }
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
