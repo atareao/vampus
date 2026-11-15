@@ -1,5 +1,14 @@
 # Changelog
+## [0.4.8] - 2026-11-15
+
+### Other
+
+- V0.4.8 (musl static binaries) (#28)
 ## [0.4.7] - 2026-11-15
+
+### Miscellaneous Tasks
+
+- Release v0.4.7
 
 ### Other
 
